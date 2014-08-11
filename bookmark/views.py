@@ -86,7 +86,7 @@ def add_page(request, category_name_url):
             new_page.save()
             # Now call the index() view.
             # The user will be shown the homepage.
-            return index(request)
+            return category(request,category_name_url)
         else:
             # The supplied form contained errors - just print them to the terminal.
             print form.errors
