@@ -73,8 +73,14 @@ def add_page(request, category_name_url):
     # URLs don't handle spaces well, so we encode them as underscores.
     # We can then simply replace the underscores with spaces again to get the name.
     category_name = category_name_url.replace('_', ' ')
-	
-	# A HTTP POST?
+
+    doescategoryexist=True
+    try:
+        category = Category.objects.get(name=category_name)
+    except Category.DoesNotExist:
+        doescategoryexist=False
+
+    # A HTTP POST?
     if request.method == 'POST':
         form = PageForm(request.POST)
 
@@ -96,7 +102,7 @@ def add_page(request, category_name_url):
 
     # Bad form (or form details), no form supplied...
     # Render the form with error messages (if any).
-    return render_to_response('bookmark/add_page.html', {'form': form,'category_name': category_name,'category_name2':category_name_url}, context)	
+    return render_to_response('bookmark/add_page.html', {'form': form,'category_name': category_name,'category_name2':category_name_url,'category_exists':doescategoryexist}, context)	
 
 def add_category(request):
     # Get the context from the request.
